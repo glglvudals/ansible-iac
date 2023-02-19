@@ -1,0 +1,35 @@
+---
+- name: Create a VM from a template #what this yaml file is going to do
+  hosts: localhost #host name of physical server
+  connection: local
+  gather_facts: no #define to not gather an effect
+
+  tasks: #tasks is indentation so it is very important and you need to very careful about it
+  - name: Create VM for SAP #the first VM for SAP *SAP: 업무를 보는 문서작성 프로그램
+    vmware_guest:
+      hostname: 192.168.100.6 
+      #hostname or IP, what ever available. If you use FQDN and dns is not working, problem will occur. so better to go with ip address
+      username: administrator@vsphere.local #credential
+      password: VMware1!
+      validate_certs: false 
+      #didn't configure the certicate valid. certificate for esxi and recently. that's why i'm not going to check it so i'll keep it as a false
+      name: testvm_SAP #the vm name
+      template: WinSrv2012 # very careful about characters
+      datacenter: Datacenter
+      datastore: SSD-Qatar
+      folder: ProdVM
+      state: poweredon
+      wait_for_ip_address: no #if you didn't configure the dhcp on your network then keep it as no
+    - name: Creat VM for IT #the second VM, this is just a name. you can chnage it anyway you like.
+      vmware_guest:
+        hostname: 192.168.100.6 #specify the vcenter hostname 
+        username: administrator@vsphere.local
+        password: VMware1!
+        validate_certs: false
+        name: testvm_IT
+        template: WinSrv2012
+        datacenter: Datacenter
+        datastore: SSD-Pak
+        folder: ProdVM
+        state: poweredon
+        wait_for_ip_address: no

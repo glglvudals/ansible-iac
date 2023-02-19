@@ -1,0 +1,4 @@
+---
+collections:
+#collection tha we need the declaration in a yaml file so under the collection list let me add the name of community.vmware
+  - name : community.vmware #this is the name of the collection that we would like to download from ansible galaxy registry

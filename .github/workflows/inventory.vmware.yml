@@ -1,0 +1,21 @@
+plugin: vmware_vm_inventory 
+# all the following property are parameters of this plugin so let me set to strict false
+strict: false
+hostname: #name or ip of vCenter or ESXi server
+username: # administrator@vsphere.local, root@vsphere.local
+password: 
+validate_certs: false
+with_tages: false
+# specify that i would like to group vms. In this way I'm able to start the vmware_vm_invnetory plugin and specify some cedentials
+groups:
+  VMs: True
+
+# command ansible
+# ansible --version
+# ansible-galaxy collection list community.vmware
+# change dicrectory
+# cat ansible.cfg
+# ansible-inventory -i inventory.vmware.yml --list => under the hood ansible is using python library to connect to the vmware infrastructure
+# executing the authentication with a credential that we specified in the yaml and listing all the available virtual machine
+
+

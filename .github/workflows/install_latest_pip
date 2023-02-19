@@ -1,0 +1,31 @@
+####### Powershell ########
+# Activate WSL using Powershell 
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux 
+# WSL static intall link
+https://learn.microsoft.com/ko-kr/windows/wsl/install-manual#downloading-distributions
+# open Powershell with administive and execute command line
+Add-AppxPackage .\CanonicalGroupLimited.UbuntuonWindows_2004.2021.825.0.AppxBundle
+
+####### Ubuntu ########
+sudo apt update && sudo apt upgrade # ubuntu version update
+sudo apt install software-properties-common -y # to use add-apt-repository
+sudo add-apt-repository --yes --update ppa:ansible/ansible # ppa: provilaged process automation
+sudo apt install ansible -y # install ansdible
+sudo apt install python3 #install python
+sudo apt upgrade python3 # upgrade pyhton
+sudo apt install python3-pip #install pip
+sudo apt install python3-venv #install python3-venv
+python3 #check the version of installed python
+python3.8 -m venv .venv # select latest version 3.8. and select the module vm virtual environment and create new virtual environment called venv
+ls -al #check created directory venv
+source venv/bin/activate #activate this environment
+pip3.8 install --upgrade pip # this is the common python package manager and is great to have the latest version available
+# after uprading pip we are ready to install whatever we need
+pip3.8 install request
+pip3.8 install pyvmomi
+pip3.8 install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git #pip is connecting to the github repository downloading the necessary file and complie in workstation
+pip3.8 freeze > requirements.txt #save what we create
+# In this way everybody that has this text file is albe to recreate this exactly virtual evironment without understanding and knowing nothing.
+# Because the text file will be the exact one with all the version that I have in my system. this is great way to share with colleaguse.
+deactivate # when your done deactive virtual environment 
+

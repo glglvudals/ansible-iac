@@ -1,0 +1,12 @@
+# we need to define each of this variable with the value
+---
+# you need to customize with your real data
+vcenter_hostname: "vmware.example.com" #this could be very sensitive information so i'm going to provide some demo content. "vmware.example.com" is domain name
+vcenter_datacenter: "vmwaredatacenter" #datacenter name
+vcenter_validate_certs: false #i have defined to sign certificate in "vm_info.yml". so switch to force is better in production envirionment to have a real certificate 
+vcenter_usernaame: "username@vsphere.local"
+vcenter_password: "MySecretPassword123"
+vm_name: "myvm"
+
+#this is a good approach to seperate a variable from the main ansible paly book. so everything is set it up. this hello world to demonstrate how to connect to a vmware 
+#infrastructure and list the detail of a virtual machine let's move on to the terminal
