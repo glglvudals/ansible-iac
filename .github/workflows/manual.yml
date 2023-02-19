@@ -1,0 +1,50 @@
+---
+- hosts: localhost
+  becom: false
+  gather_facts: false
+  pre_task:
+    - include_vars: vars.yaml
+
+  taks:
+    - name: make dc
+      cmmunity.vmware.vmware_vm_shell:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      datacenter: "{{ datacenter }}"
+      validate_certs: 'false'
+      vm_id: KH-DC
+      vm_id_type: vm_name
+      vm_username: 'administrator'
+      vm_password: 'VMware1!'
+      vm_shell: 'c:\windows\system32\windowspowershell\v1.0\powershell.exe'
+      vm_sheel_arg: 'Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools'
+      vm_shell_cwd: 'c:\Users\Administrator'
+      wait_for_process: True
+      timeout: 180
+    delgate_to: localhost
+    register: shell_command_with_wait_timeout
+
+        - name: ADDSForest
+      cmmunity.vmware.vmware_vm_shell:
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      datacenter: "{{ datacenter }}"
+      validate_certs: 'false'
+      vm_id: KH-DC
+      vm_id_type: vm_name
+      vm_username: 'administrator'
+      vm_password: 'VMware1!'
+      vm_shell: 'c:\windows\system32\windowspowershell\v1.0\powershell.exe'
+      vm_sheel_arg: 'Install-ADDSForest -CreateDnsDelegation:$false -DatabasePath C:\Windows\NTDS -DomainMode WinThreshold -DomainName auto.kh -DomainNetbiosName auto -ForestMode WinThreshold -InstallDns:$true -LogPath C:\Windows\NTDS -NoRebootOnCompletion:$false -SysvolPath C:\Windows\SYSVOL -Force:$true -SafeModeAdministratorPassword (ConvertTo-SecureString -AsPlainText "VMware1!" -force)'
+      vm_shell_cwd: 'c:\Users\Administrator'
+      wait_for_process: True
+      timeout: 180
+    delgate_to: localhost
+    register: shell_command_with_wait_timeout
+
+
+
+    
+    
