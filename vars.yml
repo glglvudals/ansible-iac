@@ -1,0 +1,21 @@
+# we need to define each of this variable with the value
+---
+# you need to customize with your real data
+vcenter_hostname: "vx-vcenter.puzzle.local" #this could be very sensitive information so i'm going to provide some demo content. "vmware.example.com" is domain name
+datacenter_name: "VxRail-Datacenter" #datacenter name
+vcenter_validate_certs: false #i have defined to sign certificate in "vm_info.yml". so switch to force is better in production envirionment to have a real certificate 
+vcenter_username: "administrator@vsphere.local"
+vcenter_password: "Vjwmftltmxpawm1!"
+esxi_username: "root"
+esxi_password: "VMware1!"
+esxi_hostname: "vx-esxi02.puzzle.local"
+canonical: KH
+full_folder_prefix: "/VxRail-Datacenter/vm/ktest/"
+template_name: "win2019"
+public_net: "vCenter Server Network-7e94016e-04d8-488a-af0e-efa921a13720"
+private_net: "KH-Trunk"
+vcenter_validation_certs: 'false'
+vm_name: "KH-DC"
+datastore_name: "VxRail-Virtual-SAN-Datastore"
+#this is a good approach to seperate a variable from the main ansible paly book. so everything is set it up. this hello world to demonstrate how to connect to a vmware 
+#infrastructure and list the detail of a virtual machine let's move on to the terminal
