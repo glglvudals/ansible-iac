@@ -1,0 +1,161 @@
+---
+- name: deploy DC VM
+  hosts: localhost
+  become: false   #disable become privilege we don't need privilege for this script and 
+  gather_facts: false   #never system information so let's disable also fax gathering
+  collections:
+    - community.vmware     #define the namespace of a collection under community.vmware #we could shorten the name in this playbook
+  pre_tasks:   #pre-task is quite useful, let me include one variable file in my case vars.yml
+    - include_vars: vars.yml
+  vars:
+    ansible_python_interpreter: /bin/python3
+    
+  tasks:
+    - name: Deploy ESXi from Template
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        name: "{{ canonical + '-ESXi-01' }}"
+        state: "poweredon"
+        datacenter: '{{ datacenter_name }}'
+        folder: "{{ full_folder_prefix + canonical }}"
+        esxi_hostname: '{{ esxi_hostname }}'
+        datastore: "{{ datastore_name }}"
+        template: "{{ template_name }}"
+        networks:
+        - name: "{{ canonical + '-Trunk' }}"
+          label: "Network adapter 1"
+          connected: True
+          start_connected: True
+          ip: 10.10.1.11
+          netmask: 255.255.255.0
+          gateway: 10.10.1.1
+          dns_servers: 
+          - 172.16.11.63
+          type: static
+        - name: "{{ canonical + '-Trunk' }}"
+        - name: "{{ canonical + '-Trunk' }}"
+        - name: "{{ canonical + '-Trunk' }}"                           
+        customization:
+          password: VMware1!
+          domain: wish.kh
+          domainadmin: administrator
+          domainadminpassword: VMware1!
+          autologon: true
+          autologoncount: 1
+        wait_for_customization: yes
+        wait_for_customization_timeout: 360
+      delegate_to: localhost
+      ignore_errors: yes     
+
+    - name: Perform vMotion of virtual machine
+      community.vmware.vmware_vmotion:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: 'false'
+          vm_name: "{{ canonical + '-ESXi-01' }}"
+          destination_host: '{{ esxi_hostname }}'
+      delegate_to: localhost
+
+    - name: Deploy ESXi from Template
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        name: "{{ canonical + '-ESXi-02' }}"
+        state: "poweredon"
+        datacenter: '{{ datacenter_name }}'
+        folder: "{{ full_folder_prefix + canonical }}"
+        esxi_hostname: '{{ esxi_hostname }}'
+        datastore: "{{ datastore_name }}"
+        template: "{{ template_name }}"
+        networks:
+        - name: "{{ canonical + '-Trunk' }}"
+          label: "Network adapter 1"
+          connected: True
+          start_connected: True
+          ip: 10.10.1.12
+          netmask: 255.255.255.0
+          gateway: 10.10.1.1
+          dns_servers: 
+          - 172.16.11.63
+          type: static
+        - name: "{{ canonical + '-Trunk' }}"
+        - name: "{{ canonical + '-Trunk' }}"
+        - name: "{{ canonical + '-Trunk' }}"                           
+        customization:
+          password: VMware1!
+          domain: wish.kh
+          domainadmin: administrator
+          domainadminpassword: VMware1!        
+          password: VMware1!
+          autologon: true
+          autologoncount: 1
+        wait_for_customization: yes
+        wait_for_customization_timeout: 360
+      delegate_to: localhost
+      ignore_errors: yes     
+
+    - name: Perform vMotion of virtual machine
+      community.vmware.vmware_vmotion:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: 'false'
+          vm_name: "{{ canonical + '-ESXi-02' }}"
+          destination_host: '{{ esxi_hostname }}'
+      delegate_to: localhost
+
+    - name: Deploy ESXi from Template
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        name: "{{ canonical + '-ESXi-03' }}"
+        state: "poweredon"
+        datacenter: '{{ datacenter_name }}'
+        folder: "{{ full_folder_prefix + canonical }}"
+        esxi_hostname: '{{ esxi_hostname }}'
+        datastore: "{{ datastore_name }}"
+        template: "{{ template_name }}"
+        networks:
+        - name: "{{ canonical + '-Trunk' }}"
+          label: "Network adapter 1"
+          connected: True
+          start_connected: True
+          ip: 10.10.1.13
+          netmask: 255.255.255.0
+          gateway: 10.10.1.1
+          dns_servers: 
+          - 172.16.11.63
+          type: static
+        - name: "{{ canonical + '-Trunk' }}"
+        - name: "{{ canonical + '-Trunk' }}"
+        - name: "{{ canonical + '-Trunk' }}"                           
+        customization:
+          password: VMware1!
+          domain: wish.kh
+          domainadmin: administrator
+          domainadminpassword: VMware1!        
+          password: VMware1!
+          autologon: true
+          autologoncount: 1
+        wait_for_customization: yes
+        wait_for_customization_timeout: 360
+      delegate_to: localhost
+      ignore_errors: yes     
+
+    - name: Perform vMotion of virtual machine
+      community.vmware.vmware_vmotion:
+          hostname: '{{ vcenter_hostname }}'
+          username: '{{ vcenter_username }}'
+          password: '{{ vcenter_password }}'
+          validate_certs: 'false'
+          vm_name: "{{ canonical + '-ESXi-01' }}"
+          destination_host: '{{ esxi_hostname }}'
+      delegate_to: localhost      
