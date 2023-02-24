@@ -1,0 +1,38 @@
+#accessing some information about avm
+#info vm demo that is going to target localhost we would like to excute this code as the current machine ansible interpreter
+---
+- name: info vm demo
+  hosts: localhost
+  become: false 
+  #disable become privilege we don't need privilege for this script and 
+  gather_facts: false 
+  #never system information so let's disable also fax gathering
+  collections:
+    - community.vmware 
+    #define the namespace of a collection under community.vmware #we could shorten the name in this playbook
+  pre_tasks: 
+  #pre-task is quite useful, let me include one variable file in my case vars.yml
+    - include_vars: vars.yml
+  tasks: 
+  # more convenient to have a seperate file where to store all the sensitive information on my cluster.
+  # so the playbook will be more easy to read. especially the task list with only one task named get vm info.
+  # so we are going to user the vmware_guest_info ansuble module under the community.vmware collection
+  
+    - name: get VM info
+      vmware_guest_info: 
+        hostname: "{{ vcenter_hostname }}" #hostname
+        username: "{{ vcenter_username }}" #entry point
+        password: "{{ vcenter_password }}" #enrty point
+        datacenter: "{{ datacenter_name }}" #define datacenter if you have more than one
+        validate_certs: "{{ vcenter_validation_certs }}" #set the validation of ssl certificate. remind clustre came with a self-singed certificate so sometimes we need to disable this stuff
+        name: "{{ vm_name }}" #virtual machine name
+        #parameter start with a hostname and let me define a variable, this could be very useful for the following lesson using the
+        # same variable for different module 
+        # we will define all this variable
+      register : detail_vm_info
+    # what we need what do we do with this result well we would like to save in an ansible varrable called detail_vm_info
+    - name: print VM info #add another task to print it out on screen 
+      ansible.builtin.debug: #what a ansible module is ansible.builtin.debug module print information screen 
+        var: detailed_vm_info #use parameter var that defines the variable that we would like to display on screen
+
+    # by this code we are able to connect andsible to vmware and get informaition about a virtual machine
