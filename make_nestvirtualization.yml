@@ -161,7 +161,7 @@
             set system login user admin authentication plaintext-password VMware1!
             set service ssh port 22
             
-            set interfaces ethernet eth0 address dhcp
+            set interfaces ethernet eth0 address 172.16.11.63/24
             set interfaces ethernet eth0 description Outside
             set protocols static route 0.0.0.0/0 next-hop 172.16.11.1
             
@@ -213,7 +213,9 @@
           ip: 10.10.1.2
           netmask: 255.255.255.0
           gateway: 10.10.1.1
-          dns_servers: 172.16.11.20
+          dns_servers: 
+          - 127.0.0.1
+          - 172.16.11.20
           type: static
         customization:
           password: VMware1!
@@ -331,7 +333,7 @@
       delegate_to: localhost
       register: shell_command_with_wait_timeout
       ignore_errors: yes      
-      
+
     - name: Waiting 60 seconds for completing bootup
       wait_for:
         timeout: 120
@@ -355,5 +357,3 @@
           dns_servers: 
           - 127.0.0.1
           - 172.16.11.20
-      
-     
